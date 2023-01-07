@@ -17,8 +17,16 @@ bb = {1: ' ', 2: ' ', 3: ' ', 4: ' ', 5: ' ', 6: ' ', 7: ' ',
 
 def dict_comp1(bb,letter):
     cool = {key: value for key, value in bb.items() if value == letter}
+    print(cool)
     return cool
 
+
+def itg(tt):
+     for row in range(6):
+        print('\n')
+        for col in range(7):
+            index2 = row*7 + col + 1
+            print(tt[index2], end = '||')
 
 
 
@@ -76,10 +84,105 @@ def SearchL1(x,y,letter): ##use a bool where true is 'X' and false is 'O"
     detector = dict_comp1(islam,letter)
     print('ddddd',detector)
     print("bud",bud)
+    print(index2,"i")
 
+    result = []
+    result2 = []
+    result3 = []
+    result4 = []
+    for key, value in bud.items():
+        # key is the key of the dictionary (a string)
+        # value is the value of the dictionary (a number)
+        z = index2 - key
+        result.append(z)
+    firstIter = []
     for item in bud.keys():
-        print(item)
-    
-    
+        firstIter.append(item)
+    rate = []
+    for item in firstIter:
+        w = index2 - item
+        rate.append(w)
+        print(rate)
+    for i in range(len(rate)):
+        try:
+            nextLayer = index2 - (2*(rate[i]))
+            print(f"nextLayer{nextLayer} = index2({index2}) + (2*rate:{rate[i]}[i{i}])" )
+            result2.append(nextLayer)
+        except NameError:
+            print('i')
+    for i in range(len(rate)):
+        try:
+            nextLayer2 = index2 - (3*(rate[i]))
+            print(f"nextLayer{nextLayer2} = index2({index2}) + (2*rate:{rate[i]}[i{i}])" )
+            result3.append(nextLayer2)
+        except NameError:
+            print('i')
+    for i in range(len(rate)):
+        try:
+            nextLayer3 = index2 - (4*(rate[i]))
+            print(f"nextLayer{nextLayer3} = index2({index2}) + (2*rate:{rate[i]}[i{i}])" )
+            result4.append(nextLayer3)
+        except NameError:
+            print('i')            
+    itg(bb)
+    pp = {}
+    for items in result3:
+        if items == letter:
+            pp[items] = bb[items]
 
-(SearchL1(5,6,'X'))
+    # dict_comp1(result2,letter)
+    # dict_comp1(result3,letter)
+    # dict_comp1(result4,letter)
+    print(bb)
+    o = index2
+    print('r',rate)
+    try:
+        for items in rate:
+        
+            print(items)
+            if bb[o] == bb[o-items] and bb[o] == bb[o-(items*2)] and bb[o] == bb[o-(items*3)] and bb[o] != '#':
+                print(items)
+                print('a')
+                return True
+            if bb[o] == bb[o-items] and bb[o] == bb[o-(items*2)] and bb[o] == bb[o+(items)] and bb[o] != '#':
+                print(items)
+                print('this b boy won')
+                return True
+            if bb[o] == bb[o-items] and bb[o] == bb[o+(items*2)] and bb[o] == bb[o+(items*3)] and bb[o] != '#':
+                print(items)
+                print('this c boy won')
+                return True
+            if bb[o] == bb[o-items] and bb[o] == bb[o-(items*2)] and bb[o] == bb[o-(items*3)] and bb[o] != '#':
+                print(items)
+                print('this d boy won')
+            
+                return True
+            if bb[o] == bb[o-items] and bb[o] == bb[o-(items*2)] and bb[o] == bb[o+(items)] and bb[o] != '#':
+                print('this d boy won')
+            
+                return True
+            if bb[o] == bb[o+items] and bb[o] == bb[+(items*2)] and bb[o] == bb[o+(items*3)] and bb[o] != '#':
+                print('this e boy won')
+              
+                return True
+    except KeyError:
+        pass
+    print(result2)
+    print(result3)
+    for item in result3:
+        if item > 0 and item < 43:
+            if bb[item] == letter:
+                print(item)
+                print('yo',bb[item])
+                for items in result2:
+                    if bb[items] == letter and bb[index2] == letter:
+                        print('2',bb[items])
+                        if bb[index2] == letter:
+                            print('this nigga won!!')
+                            print(item)
+                            print(bb[items])
+                    
+                            return True
+   
+(SearchL1(3,3,'X'))
+SearchL1(3,3,'O')
