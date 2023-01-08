@@ -289,6 +289,141 @@ def searchL1(x, y, letter):
     except NameError:
         pass
     
+  
+def searchL2(x,y,letter):
+    index = x*7 + y + 1
+    itg(bb,index)
+    tr = (7*(x-1)) + (y + 1) + 1
+    tl = (7*(x-1)) + (y-1) + 1
+    ml = (7*x) + (y-1) + 1
+    mr = (7*x) + (y+1) + 1
+    bl = (7*(x+1)) + (y-1) + 1
+    bm = (7*(x+1)) + y + 1
+    br = (7*(x+1)) + (y+1) + 1
+    dings = {}
+    index = x*7 + y + 1
+    islam = {}
+    bud = {}
+    clock = {}
+    surroundings = [tr,mr,br,bm,bl,ml,tl]
+    for i, value in enumerate(surroundings):
+        if value > 0 and value < 43:
+            dings[i+1] = bb[value]
+            clock[i+1] = value
+    bible = dict_comp1(dings,letter)
+    posSur = [x for x in surroundings if x > 0 and x < 43]
+    print('p',posSur)
+    for items in posSur:
+        islam[items] = bb[items]
+        if bb[items] == letter:
+            bud[items] = bb[items]
+    print(index)
+    print(letter)
+    print("dings",dings)
+    print("bible",bible)
+    if len(bible) <= 1:
+        print('not possible to it to satisfy the second pinwheel')
+    try:
+        if dings[1] == dings[5] and dings[1] == letter:
+            print('up and to the right')
+            uright = [clock[1], index, clock[5]]
+            print(uright)
+            rate = clock[1] - index
+            new1 = clock[1] + rate
+            new2 = clock[5] - rate
+            print(f"new1{new1}, bb[new1]: {bb[new1]} and new2{new2}, bb[new2]{bb[new2]}")
+            if bb[new1] == letter: 
+                try:
+                    assert bb[new1]
+                    print(new1)
+                    uright.append(new1)
+                    print('uright',uright)
+                except AssertionError:
+                    print('not in index')
+                
+            if bb[new2] == letter:
+                try:
+                    assert bb[new2]
+                    print('new2',new2)
+                    uright.append(new2)
+                    print('uright',uright)
+                except AssertionError:
+                    print('not in index')
+            if bb[new1] != letter and bb[new2] != letter and dings[1] == dings[5]:
+                pass
+            else:
+                if (wrap_around_checker(uright)):
+                    return True
+    except KeyError:
+        pass
+    try:            
+        if dings[2] == dings[6] and dings[2] == letter:
+            print('horizontal trio')
+            horizontal = [clock[2],index,clock[6]]
+            print(horizontal)
+            rate = 1
+            new1 = clock[2] + rate
+            new2 = clock[6] - rate
+            print(f"new1:{new1}, bb[new1]: {bb[new1]} and new2{new2}, bb[new2]{bb[new2]}")
+            if bb[new1] == letter: 
+                try:
+                    assert bb[new1]
+                    print(new1)
+                    horizontal.append(new1)
+                    print('horizontal',horizontal)
+                except AssertionError:
+                    print('not in index')
+                
+            if bb[new2] == letter:
+                try:
+                    assert bb[new2]
+                    print('new2',new2)
+                    horizontal.append(new2)
+                    print('horizontal',horizontal)
+                except AssertionError:
+                    print('not in index')
+            if bb[new1] != letter and bb[new2] != letter and dings[2] == dings[6]:
+                pass
+            else:
+                if (wrap_around_checker(horizontal)):
+                    return True
+
+    except KeyError:
+        pass
+    try:
+        if dings[3] == dings[7] and dings[3] == letter:
+            print('x = - y')
+            uleft = [clock[3],index, clock[7]]
+            print(uleft)
+            rate = index - clock[2]
+            new1 = clock[3] - rate
+            new2 = clock[7] + rate
+            print(f"new1{new1}, bb[new1]: {bb[new1]} and new2{new2}, bb[new2]{bb[new2]}")
+            if bb[new1] == letter: 
+                try:
+                    assert bb[new1]
+                    print(new1)
+                    uleft.append(new1)
+                    print('uleft',uleft)
+                except AssertionError:
+                    print('not in index')
+                
+            if bb[new2] == letter:
+                try:
+                    assert bb[new2]
+                    print('new2',new2)
+                    uleft.append(new2)
+                    print('uleft',uleft)
+                except AssertionError:
+                    print('not in index')
+            if bb[new1] != letter and bb[new2] != letter and index == letter and dings[3] == dings[7]:
+                pass
+            else:
+                if (wrap_around_checker(uleft)):
+                    return True
+    except KeyError:
+        pass
+    
 pluto = board1
 def whoFirst():
     who = int(input("Write the number 1 to go first and the number 2 if you want to go second\n"))
@@ -329,6 +464,9 @@ def gravity(col,letter):
     game.play_move(row3,col,letter)
     if (searchL1(row3,col,letter)):
         print('you won!!!!! fucker')
+        exit()
+    if (searchL2(row3,col,letter)):
+        print('second inner pinwheel')
         exit()
     else:
         print('you did not win.... fucker')
@@ -375,7 +513,7 @@ def main():
     if player == 'X' or player == 'x':
         computer = 'O'
     else:
-        computer = 'X' 
+        computer = 'X'
     insertTokenFirstMove(player)
     win = 0 
     while '#' in bb.values():
