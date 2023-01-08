@@ -28,14 +28,17 @@ def dict_comp1(dictionary, letter):
     return {key: value for key, value in dictionary.items() if value == letter}
 
 # Define a function that prints the values in a dictionary in a grid format
-def itg(dictionary):
+def itg(dictionary,index2):
     for row in range(6):
         print('\n')
         for col in range(7):
             # Calculate the index of the current position in the dictionary
             index = row*7 + col + 1
+            if index == index2:
+                print(Fore.CYAN, end ='')
             # Print the value at the current position
             print(dictionary[index], end = '||')
+            print(Fore.WHITE,end = '')
 
 def create_number_list(start, end): 
     number_list = []
@@ -43,9 +46,33 @@ def create_number_list(start, end):
         number_list.append(number)
     return number_list
 
+def wrap_around_checker(list1):
+    print(list1)
+    leftEdge = [1, 8, 15, 22, 29, 36]
+    rightEdge = [7, 14, 21, 27, 35, 42]
+    is_wrap_around = False
+    if not all(x in leftEdge for x in list1) and not all(x in rightEdge for x in list1):
+        for num in list1[1:3]:
+            if num in leftEdge or num in rightEdge:
+                is_wrap_around = True
+                break
+        if is_wrap_around:
+            print('wrap around detected!!!!')
 
+            return False
+        else:
+            print("here are the index numbers for the winning 4 tokens. No wrap around detected", list1)
+            return True
 
-
+    # print(f"list0:{list1[0]}list1:{list1[1]}list2:{list1[2]},list3:{list1[3]}")
+    # if not all(x in leftEdge for x in list1) and not all(x in rightEdge for x in list1):
+    #     if list1[0] not in leftEdge and list1[0] not in rightEdge:
+    #         if list1[1] in leftEdge or list1[2] in leftEdge:
+    #             print('wrap around detected')
+    #         elif list1[1] in rightEdge or list1[2] in rightEdge:
+    #             print('wrap around detected')
+    #     else:
+    #         print("here are the index numbers for the winning 4 tokens. No wrap around detected",list1)
 # Define a function that searches for a given letter in the positions surrounding a given position on the game board
 def SearchL1(x, y, letter):
     # Generate random 'X' and 'O' values for the positions on the game board
@@ -55,7 +82,6 @@ def SearchL1(x, y, letter):
             bb[key] = random.choice(['X','O'])
         else:
             bb[key] = letter
-    
     # Convert the dictionary into a 2D list representing the game board as a grid
     grid = []
     for row in range(6):
@@ -99,13 +125,13 @@ def SearchL1(x, y, letter):
     bud = {}
     surroundings = [tr,tl,ml,mr,bl,bm,br]
     posSur = [x for x in surroundings if x > 0 and x < 43]
-    print(posSur)
+    print('p',posSur)
     for items in posSur:
         islam[items] = bb[items]
         if bb[items] == letter:
             bud[items] = bb[items]
     
-  
+    
     
     detector = dict_comp1(islam,letter)
     print('ddddd',detector)
@@ -151,7 +177,7 @@ def SearchL1(x, y, letter):
             result4.append(nextLayer3)
         except NameError:
             print('i')            
-    itg(bb)
+    itg(bb,index2)
     print(f"result2:{result2} and result3:{result3} and result:{result}")
     pp = {}
     ppp = {}
@@ -163,14 +189,14 @@ def SearchL1(x, y, letter):
             if bb[val] == letter:
                 pp[val] = bb[val]
     except KeyError:
-        print('IndexError')
+        print('keyer')
         pass
     try:
         for i, val  in enumerate(result3):
             if bb[val] == letter:
                 ppp[val] = bb[val]
     except KeyError:
-        print('IndexError')
+        print('keyerror')
         pass
     
     print('pp',pp)
@@ -186,10 +212,19 @@ def SearchL1(x, y, letter):
                 rater = indexer/3
                 if rater % 1 == 0:
                     if bb[itm - rater] == letter:
+                        if len(winlist) > 0:
+                            winList2 = []
+                            winlist2.append(itm)
+                            winlist2.append(int(itm + rater))
+                            winlist2.append(int(itm + (2 * rater)))
+                            winlist2.append(index2)
+                            print("winList2:",winList2)
                         winlist.append(itm)
                         winlist.append(int(itm - rater))
                         winlist.append(int(itm - (2 * rater)))
                         winlist.append(index2)
+                        if wrap_around_checker(winlist):
+                            return True
                         print("you won to the right motherfucker, this one subtracts the played tile from the final one that was found to be the same")
                         print(f"itm:{itm}, indexer:{indexer}, played tile: {index2}, rater {rater}, winList{winlist}") 
             else:
@@ -197,77 +232,32 @@ def SearchL1(x, y, letter):
                 rater = indexer/3
                 if rater % 1 == 0:
                     if bb[itm + rater] == letter:
+                        if len(winlist) > 0:
+                            winList2 = []
+                            winlist2.append(itm)
+                            winlist2.append(int(itm + rater))
+                            winlist2.append(int(itm + (2 * rater)))
+                            winlist2.append(index2)
+                            print("winList2:",winList2)
                         winlist.append(itm)
                         winlist.append(int(itm + rater))
                         winlist.append(int(itm + (2 * rater)))
                         winlist.append(index2)
+                        if wrap_around_checker(winlist):
+                            return True
                         print("you won to the left motherfucker, going down in index number")
                         print(rater) 
                         print(f"itm:{itm}, indexer:{indexer}, played tile: {index2}, rater {rater}, winList{winlist}") 
+      
+           
+        return winlist
     except KeyError:
         print('key')
         pass
-
-    # for i in range(index2,itm+1):
-    #     if bb[i] == letter:
-    #         ct += 1
-    #         print(ct,i)
-    #         if ct == 4:
-    #             print('you are a jew, thats why you won')
-    #             return True
-
+    except NameError:
+        pass
     
-    # dict_comp1(result2,letter)
-    # dict_comp1(result3,letter)
-    # dict_comp1(result4,letter)
-    # o = index2
-    # print('r',rate)
-    # try:
-    #     for items in rate:
-        
-    #         print(items)
-    #         if bb[o] == bb[o-items] and bb[o] == bb[o-(items*2)] and bb[o] == bb[o-(items*3)] and bb[o] != '#' and bb[o] == letter:
-    #             print(items)
-    #             print('a')
-    #             return True
-    #         if bb[o] == bb[o-items] and bb[o] == bb[o-(items*2)] and bb[o] == bb[o+(items)] and bb[o] != '#' and bb[o] == letter:
-    #             print(items)
-    #             print('this b boy won')
-    #             return True
-    #         if bb[o] == bb[o-items] and bb[o] == bb[o+(items*2)] and bb[o] == bb[o+(items*3)] and bb[o] != '#' and bb[o] == letter:
-    #             print(items)
-    #             print('this c boy won')
-    #             return True
-    #         if bb[o] == bb[o-items] and bb[o] == bb[o-(items*2)] and bb[o] == bb[o-(items*3)] and bb[o] != '#' and bb[o] == letter:
-    #             print(items)
-    #             print('this d boy won')
-    #             return True
-    #         if bb[o] == bb[o-items] and bb[o] == bb[o-(items*2)] and bb[o] == bb[o+(items)] and bb[o] != '#' and bb[o] == letter:
-    #             print('this e boy won')
-    #             return True
-    #         if bb[o] == bb[o+items] and bb[o] == bb[o+(items*2)] and bb[o] == bb[o+(items*3)] and bb[o] != '#' and bb[o] == letter:
-    #             print('this f boy won')
-              
-    #             return True
-    # except KeyError:
-    #     pass
-    # print(result2)
-    # print(result3)
-    # for item in result3:
-    #     if item > 0 and item < 43:
-    #         if bb[item] == letter:
-    #             print(item)
-    #             print('yo',bb[item])
-    #             for items in result2:
-    #                 if bb[items] == letter and bb[index2] == letter :
-    #                     print('2',bb[items])
-    #                     if bb[index2] == letter:
-    #                         print(f"item:{item} bb[items]:{bb[item]} ")
-    #                         print(f"items:{items} bb[items]:{bb[items]} ")
+xx = random.randint(0,5)
+yy = random.randint(0,6)
 
-    #                         print('this nigga won!!')
-                            
-                    
-    #                         return True
-   
-(SearchL1(3,3,'O'))
+SearchL1(xx,yy,'O')
