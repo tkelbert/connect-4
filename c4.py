@@ -371,6 +371,7 @@ def searchL2(x,y,letter):
                     print(new1)
                     horizontal.append(new1)
                     print('horizontal',horizontal)
+                    horizontal.sort()
                 except AssertionError:
                     print('not in index')
                 
@@ -447,10 +448,17 @@ def printBoard():
 
 def getRow():
     print('Pick the column that you would like to drop your piece into')
-    a = int(input('Options (1-7) Enter here: '))
+    try:
+        a = int(input('Options (1-7) Enter here: '))
+    except ValueError:
+        getRow()  
+    game.print_board()    
+
     try:
         assert a in range(1,8)
     except AssertionError:
+        getRow()
+    except ValueError:
         getRow()
     return a
 def gravity(col,letter):
@@ -476,7 +484,7 @@ def insertTokenFirstMove(letter):
     print("column number is the top number of  board in blue text.")
     pct("1   2   3   4   5   6   7", colorama.Fore.BLUE)
 
-    print(bb)
+    ##game.print_board()
     print("Welcome to connect 4! This game will test humanity against machine, and you are up to the plate")
     print("Which column do you want to put your piece in? It will fall to the bottom of that column ")
     t = int(input("Column number: "))
@@ -506,7 +514,8 @@ def compMove(letter):
     bestScore = -10000
 
 
-
+def detectPoss(list3):
+    
 
 def main():
     player = whichLetter()
@@ -514,6 +523,7 @@ def main():
         computer = 'O'
     else:
         computer = 'X'
+    game.print_board()
     insertTokenFirstMove(player)
     win = 0 
     while '#' in bb.values():
@@ -521,7 +531,8 @@ def main():
         fcompMove(computer)
         game.print_board()
         gravity(getRow()-1,player)
-        
+    
+    print("Good game")
 main()
 
 def minimax():
