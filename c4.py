@@ -103,6 +103,7 @@ def printVictory(list):
                 colorama.deinit()
     print(Back.BLACK)
 def wrap_around_checker(list1):
+    list1.sort()
     print(list1)
     leftEdge = [1, 8, 15, 22, 29, 36]
     rightEdge = [7, 14, 21, 27, 35, 42]
@@ -338,6 +339,7 @@ def searchL2(x,y,letter):
                     print(new1)
                     uright.append(new1)
                     print('uright',uright)
+                    uright.sort()
                 except AssertionError:
                     print('not in index')
                 
@@ -347,6 +349,7 @@ def searchL2(x,y,letter):
                     print('new2',new2)
                     uright.append(new2)
                     print('uright',uright)
+                    uright.sort()
                 except AssertionError:
                     print('not in index')
             if bb[new1] != letter and bb[new2] != letter and dings[1] == dings[5]:
@@ -381,6 +384,8 @@ def searchL2(x,y,letter):
                     print('new2',new2)
                     horizontal.append(new2)
                     print('horizontal',horizontal)
+                    horizontal.sort()
+
                 except AssertionError:
                     print('not in index')
             if bb[new1] != letter and bb[new2] != letter and dings[2] == dings[6]:
@@ -406,15 +411,17 @@ def searchL2(x,y,letter):
                     print(new1)
                     uleft.append(new1)
                     print('uleft',uleft)
+                    uleft.sort()
                 except AssertionError:
                     print('not in index')
-                
+                    uleft.sort()
             if bb[new2] == letter:
                 try:
                     assert bb[new2]
                     print('new2',new2)
                     uleft.append(new2)
                     print('uleft',uleft)
+                    uleft.sort()
                 except AssertionError:
                     print('not in index')
             if bb[new1] != letter and bb[new2] != letter and index == letter and dings[3] == dings[7]:
@@ -460,7 +467,12 @@ def getRow():
         getRow()
     except ValueError:
         getRow()
-    return a
+    except UnboundLocalError:
+        getRow()
+    try:
+        return a
+    except UnboundLocalError:
+        getRow()
 def gravity(col,letter):
     unfilled = 0
     #interate through each column, adding to a number that represents the level of the pieces
@@ -513,9 +525,6 @@ def fcompMove(letter):
 def compMove(letter):
     bestScore = -10000
 
-
-def detectPoss(list3):
-    
 
 def main():
     player = whichLetter()
