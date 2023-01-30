@@ -78,6 +78,7 @@ def itg(dictionary,index2):
             # Print the value at the current position
             print(dictionary[index], end = '||')
             print(Fore.WHITE,end = '')
+    print(Back.BLACK)
 def convertToBB(grid):
     for row in range(6):
         for col in range(7):

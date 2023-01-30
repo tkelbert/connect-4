@@ -404,8 +404,8 @@ def main():
     yy = random.randint(3,4)
 
     index = (7 * xx) + yy + 1
-    letter = bb[index]
     searchL2(xx,yy,letter)
+    letter = bb[index]
 
 main()
  # try:
